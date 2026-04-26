@@ -15,12 +15,10 @@ jobs:
       - name: 拉取代码
         uses: actions/checkout@v4
 
-      - name: 安装 uv（自动读 .python-version）
+      - name: 安装 uv
         uses: astral-sh/setup-uv@v6
-        with:
-          python-version: ".python-version"
 
-      - name: 安装依赖
+      - name: 安装依赖（uv sync 会自动读 .python-version）
         run: uv sync --extra dev
 
       - name: Lint (ruff)
