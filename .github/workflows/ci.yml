@@ -1,31 +1,24 @@
 name: CI
 
-# 触发条件：push 到 main 或者开 PR
 on:
   push:
     branches: [main]
   pull_request:
-  workflow_dispatch:   # 允许在网页上手动点按钮触发
+  workflow_dispatch:
 
 jobs:
   test:
-    name: 测试 (Python ${{ matrix.python-version }})
+    name: 测试
     runs-on: ubuntu-latest
-
-    # matrix：同时跑多个 Python 版本，互相独立、并行
-    strategy:
-      matrix:
-        python-version: ["3.12", "3.13"]
 
     steps:
       - name: 拉取代码
         uses: actions/checkout@v4
 
-      - name: 安装 uv
+      - name: 安装 uv（自动读 .python-version）
         uses: astral-sh/setup-uv@v3
-
-      - name: 设置 Python
-        run: uv python install ${{ matrix.python-version }}
+        with:
+          python-version-file: ".python-version"
 
       - name: 安装依赖
         run: uv sync --extra dev
