@@ -12,6 +12,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: 侦察这台云端 VM
+        run: |
+          echo "===== OS ====="
+          cat /etc/os-release | head -3
+          uname -a
+          echo "===== CPU ====="
+          nproc
+          lscpu | grep -E "Model name|MHz|Socket|Core" | head -5
+          echo "===== 内存 ====="
+          free -h
+          echo "===== 磁盘 ====="
+          df -h / | tail -1
+          echo "===== 网络 ====="
+          curl -s --max-time 3 ifconfig.me && echo
+          echo "===== 预装常用工具 ====="
+          which python node go rustc docker gh jq aws gcloud 2>/dev/null
+
       - name: 拉取代码
         uses: actions/checkout@v4
 
